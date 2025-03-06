@@ -87,6 +87,7 @@ public class Db4oDAO implements Closeable, IDAO {
                 return employee.getId() == Integer.parseInt(id.toString());
             }
         });
+        if (result.isEmpty()) return null;
         return result.getFirst();
     }
 
@@ -110,6 +111,33 @@ public class Db4oDAO implements Closeable, IDAO {
     @Override
     public Employee updateEmployee(Object employeeObject) {
         if (!(employeeObject instanceof Employee employee)) return null;
+        System.out.println("¿Qué desea actualizar del empleado?");
+        System.out.println("1. Nombre");
+        System.out.println("2. Puesto");
+        System.out.println("3. Departamento");
+        int option = Utils.Ask.askForNumber();
+        switch (option) {
+            case 1:
+                System.out.println("Ingrese el nuevo nombre:");
+                String name = Utils.Ask.askForString();
+                employee.setName(name);
+                break;
+            case 2:
+                System.out.println("Ingrese el nuevo puesto:");
+                String job = Utils.Ask.askForString();
+                employee.setJob(job);
+                break;
+            case 3:
+                System.out.println("Ingrese el id del nuevo departamento:");
+                int departmentId = Utils.Ask.askForNumber();
+                Department department = findDepartmentById(departmentId);
+                if (department == null) return null;
+                employee.setDepartment(department);
+                break;
+            default:
+                System.out.println("Opción no válida.");
+                return null;
+        }
         try {
             container.store(employee);
         } catch (Exception e) {
@@ -161,6 +189,7 @@ public class Db4oDAO implements Closeable, IDAO {
                 return department.getId() == Integer.parseInt(id.toString());
             }
         });
+        if (result.isEmpty()) return null;
         return result.getFirst();
     }
 
@@ -193,30 +222,25 @@ public class Db4oDAO implements Closeable, IDAO {
         if (!(departmentObject instanceof Department department)) {
             return null;
         }
-
-
         System.out.println("¿Qué desea actualizar del departamento?");
         System.out.println("1. Nombre");
         System.out.println("2. Ubicación");
-        System.out.println("3. Ambos");
-
-        int opcion = Utils.Ask.askForNumber();
-        switch (opcion) {
+        int option = Utils.Ask.askForNumber();
+        switch (option) {
             case 1:
                 System.out.println("Ingrese el nuevo nombre:");
-                String nuevoNombre = Utils.Ask.askForString();
-                department.setName(nuevoNombre);
+                String name = Utils.Ask.askForString();
+                department.setName(name);
                 break;
             case 2:
                 System.out.println("Ingrese la nueva ubicación:");
-                String nuevaUbicacion = Utils.Ask.askForString();
-                department.setLocation(nuevaUbicacion);
+                String location = Utils.Ask.askForString();
+                department.setLocation(location);
                 break;
             default:
                 System.out.println("Opción no válida.");
                 return null;
         }
-
         try {
             container.store(department);
         } catch (Exception e) {

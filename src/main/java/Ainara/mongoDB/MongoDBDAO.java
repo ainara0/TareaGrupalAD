@@ -119,6 +119,7 @@ public class MongoDBDAO implements Closeable, IDAO {
         System.out.println("Seleccione el campo a actualizar:");
         System.out.println("1. Nombre");
         System.out.println("2. Localidad");
+        System.out.println("3. Departamento");
         int choice = Utils.Ask.askForNumber();
         switch (choice) {
             case 1:
@@ -202,15 +203,12 @@ public class MongoDBDAO implements Closeable, IDAO {
         if (!(departmentObject instanceof Department department)) {
             return null;
         }
-
-
         System.out.println("Seleccione el campo a actualizar:");
         System.out.println("1. Nombre");
         System.out.println("2. Localizacion");
-
-        int opcion = Utils.Ask.askForNumber();
+        int option = Utils.Ask.askForNumber();
         Bson updates;
-        switch (opcion){
+        switch (option){
             case 1:
                 System.out.println("Ingrese el nuevo nombre: ");
                 String newName = Utils.Ask.askForString();
