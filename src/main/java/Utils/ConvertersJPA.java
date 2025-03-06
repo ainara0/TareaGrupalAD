@@ -1,4 +1,4 @@
-package java.Utils;
+package Utils;
 
 import DAO.Department;
 import Rafa.hibernate.DepartmentJPA;

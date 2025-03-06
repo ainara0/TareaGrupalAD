@@ -1,4 +1,4 @@
-package java.Rafa.hibernate;
+package Rafa.hibernate;
 
 import DAO.Department;
 import DAO.Employee;

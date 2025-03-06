@@ -1,4 +1,4 @@
-package java.Pere.jdbc;
+package Pere.jdbc;
 
 import DAO.Department;
 import DAO.Employee;

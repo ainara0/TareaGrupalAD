@@ -1,4 +1,4 @@
-package java.Rafa.main;
+package Rafa.main;
 
 import Ainara.db4o.Db4oDAO;
 import Ainara.mongoDB.MongoDBDAO;

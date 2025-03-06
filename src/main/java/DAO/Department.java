@@ -1,4 +1,4 @@
-package java.DAO;
+package DAO;
 
 public class Department {
     private int id;

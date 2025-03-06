@@ -1,4 +1,4 @@
-package java.Ainara.db4o;
+package Ainara.db4o;
 
 import DAO.Department;
 import DAO.Employee;

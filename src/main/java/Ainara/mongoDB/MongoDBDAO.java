@@ -1,4 +1,4 @@
-package java.Ainara.mongoDB;
+package Ainara.mongoDB;
 
 import DAO.*;
 import com.mongodb.client.*;

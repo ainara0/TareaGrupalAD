@@ -1,7 +1,4 @@
-package java.Rafa.hibernate;
-
-import DAO.Employee;
-import Utils.ConvertersJPA;
+package Rafa.hibernate;
 
 import jakarta.persistence.*;
 
