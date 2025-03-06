@@ -167,7 +167,7 @@ public class PostgreSQLDAO implements IDAO {
         }
 
         // 2. Solicitar al usuario qué campo desea actualizar
-        Scanner scanner = new Scanner(System.in);
+
         System.out.println("Seleccione el campo que desea actualizar para el empleado:");
         System.out.println("1. Nombre");
         System.out.println("2. Trabajo");
@@ -176,7 +176,7 @@ public class PostgreSQLDAO implements IDAO {
         System.out.print("Opciones: ");
         int option;
         try {
-            option = Integer.parseInt(scanner.nextLine());
+            option = Utils.Ask.askForNumber();
         } catch (NumberFormatException ex) {
             System.out.println("Error: La opción debe ser un número entero.");
             return null;
@@ -186,19 +186,19 @@ public class PostgreSQLDAO implements IDAO {
         switch (option) {
             case 1:
                 System.out.print("Introduzca el nuevo nombre: ");
-                String newName = scanner.nextLine();
+                String newName = Utils.Ask.askForString();
                 employee.setName(newName);
                 break;
             case 2:
                 System.out.print("Introduzca el nuevo trabajo: ");
-                String newJob = scanner.nextLine();
+                String newJob = Utils.Ask.askForString();
                 employee.setJob(newJob);
                 break;
             case 3:
                 System.out.print("Introduzca el nuevo ID del departamento: ");
                 int newDepId;
                 try {
-                    newDepId = Integer.parseInt(scanner.nextLine());
+                    newDepId = Utils.Ask.askForNumber();
                 } catch (NumberFormatException ex) {
                     System.out.println("Error: El ID del departamento debe ser un número entero.");
                     return null;
@@ -212,13 +212,13 @@ public class PostgreSQLDAO implements IDAO {
                 break;
             case 4:
                 System.out.print("Introduzca el nuevo nombre: ");
-                String allName = scanner.nextLine();
+                String allName = Utils.Ask.askForString();
                 System.out.print("Introduzca el nuevo trabajo: ");
-                String allJob = scanner.nextLine();
+                String allJob = Utils.Ask.askForString();
                 System.out.print("Introduzca el nuevo ID del departamento: ");
                 int allDepId;
                 try {
-                    allDepId = Integer.parseInt(scanner.nextLine());
+                    allDepId = Utils.Ask.askForNumber();
                 } catch (NumberFormatException ex) {
                     System.out.println("Error: el ID del departamento debe ser un número entero.");
                     return null;
@@ -439,17 +439,16 @@ public class PostgreSQLDAO implements IDAO {
         }
 
         // 2. Solicitar al usuario qué campo desea actualizar
-        Scanner scanner = new Scanner(System.in);
+
         System.out.println("Seleccione el campo a actualizar:");
         System.out.println("1. Nombre");
         System.out.println("2. Localidad");
         System.out.println("3. Ambas");
         System.out.print("Opcion: ");
-        int option = scanner.nextInt();
-        scanner.nextLine(); // Consumir el salto de línea
+        int opcion = Utils.Ask.askForNumber();
 
         String sql = "";
-        switch (option) {
+        switch (opcion) {
             case 1:
                 sql = "UPDATE departamento SET nombre = ? WHERE depno = ? RETURNING depno, nombre, ubicacion";
                 break;
@@ -468,24 +467,24 @@ public class PostgreSQLDAO implements IDAO {
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            switch (option) {
+            switch (opcion) {
                 case 1:
                     System.out.print("Introduce el nuevo nombre: ");
-                    String newName = scanner.nextLine();
+                    String newName = Utils.Ask.askForString();
                     pstmt.setString(1, newName);
                     pstmt.setInt(2, dept.getId());
                     break;
                 case 2:
                     System.out.print("Introduce la nueva localidad: ");
-                    String newLocation = scanner.nextLine();
+                    String newLocation = Utils.Ask.askForString();
                     pstmt.setString(1, newLocation);
                     pstmt.setInt(2, dept.getId());
                     break;
                 case 3:
                     System.out.print("Introduzca el nuevo nombre: ");
-                    String name = scanner.nextLine();
+                    String name = Utils.Ask.askForString();
                     System.out.print("Introduzca la nueva ubicación: ");
-                    String location = scanner.nextLine();
+                    String location = Utils.Ask.askForString();
                     pstmt.setString(1, name);
                     pstmt.setString(2, location);
                     pstmt.setInt(3, dept.getId());

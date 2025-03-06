@@ -222,7 +222,6 @@ public class TextFileDAO implements IDAO {
         if (!(id instanceof Employee employee)){
             return null;
         }
-        Scanner scanner = new Scanner(System.in);
         for (Employee e : employees) {
             if (e.getId() == employee.getId()) {
                 System.out.println("Seleccione el campo que desea actualizar para el empleado:");
@@ -233,7 +232,7 @@ public class TextFileDAO implements IDAO {
                 System.out.print("Opciones: ");
                 int option;
                 try {
-                    option = Integer.parseInt(scanner.nextLine());
+                    option =  Utils.Ask.askForNumber();
                 } catch (NumberFormatException ex) {
                     System.out.println("Error: La opción debe ser un número entero.");
                     return null;
@@ -242,19 +241,19 @@ public class TextFileDAO implements IDAO {
                 switch (option) {
                     case 1:
                         System.out.print("Introduzca el nuevo nombre: ");
-                        String newName = scanner.nextLine();
+                        String newName = Utils.Ask.askForString();
                         e.setName(newName);
                         break;
                     case 2:
                         System.out.print("Introduzca el nuevo trabajo: ");
-                        String newJob = scanner.nextLine();
+                        String newJob = Utils.Ask.askForString();
                         e.setJob(newJob);
                         break;
                     case 3:
                         System.out.print("Introduzca el nuevo ID del departamento: ");
                         int newDepId;
                         try {
-                            newDepId = Integer.parseInt(scanner.nextLine());
+                            newDepId = Utils.Ask.askForNumber();
                         } catch (NumberFormatException ex) {
                             System.out.println("Error: El ID del departamento debe ser un número entero.");
                             return null;
@@ -268,13 +267,13 @@ public class TextFileDAO implements IDAO {
                         break;
                     case 4:
                         System.out.print("Introduzca el nuevo nombre: ");
-                        String allName = scanner.nextLine();
+                        String allName = Utils.Ask.askForString();
                         System.out.print("Introduzca el nuevo trabajo: ");
-                        String allJob = scanner.nextLine();
+                        String allJob = Utils.Ask.askForString();
                         System.out.print("Introduzca el nuevo ID del departamento: ");
                         int allDepId;
                         try {
-                            allDepId = Integer.parseInt(scanner.nextLine());
+                            allDepId = Utils.Ask.askForNumber();
                         } catch (NumberFormatException ex) {
                             System.out.println("Error: el ID del departamento debe ser un número entero.");
                             return null;
@@ -411,7 +410,7 @@ public class TextFileDAO implements IDAO {
         if (!(id instanceof Department dept)){
             return null;
         }
-        Scanner scanner = new Scanner(System.in);
+
         for (Department d : departments) {
             if (d.getId() == dept.getId()) {
                 System.out.println("Seleccione el campo a actualizar para el departamento:");
@@ -419,25 +418,24 @@ public class TextFileDAO implements IDAO {
                 System.out.println("2. Ciudad");
                 System.out.println("3. Ambas");
                 System.out.print("Opcion: ");
-                int option = scanner.nextInt();
-                scanner.nextLine(); // Consume newline
+                int option = Utils.Ask.askForNumber();
 
                 switch (option) {
                     case 1:
                         System.out.print("Introduzca el nuevo nombre: ");
-                        String newName = scanner.nextLine();
+                        String newName = Utils.Ask.askForString();
                         d.setName(newName);
                         break;
                     case 2:
                         System.out.print("Introduzca la nueva ciudad: ");
-                        String newCity = scanner.nextLine();
+                        String newCity = Utils.Ask.askForString();
                         d.setLocation(newCity);
                         break;
                     case 3:
                         System.out.print("Introduzca el nuevo nombre: ");
-                        String allName = scanner.nextLine();
+                        String allName = Utils.Ask.askForString();
                         System.out.print("Introduzca la nueva ciudad: ");
-                        String allCity = scanner.nextLine();
+                        String allCity = Utils.Ask.askForString();
                         d.setName(allName);
                         d.setLocation(allCity);
                         break;

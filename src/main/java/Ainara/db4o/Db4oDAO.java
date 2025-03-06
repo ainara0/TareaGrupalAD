@@ -186,6 +186,8 @@ public class Db4oDAO implements Closeable, IDAO {
      * @param departmentObject the department object with updated information.
      * @return the updated Department object, or null if the update fails.
      */
+
+    //todo falta comprobacion deberia esta bien
     @Override
     public Department updateDepartment(Object departmentObject) {
         if (!(departmentObject instanceof Department department)) {
