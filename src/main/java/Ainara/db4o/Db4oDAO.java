@@ -201,6 +201,7 @@ public class Db4oDAO implements Closeable, IDAO {
      */
     @Override
     public boolean addDepartment(Department department) {
+        if (findDepartmentById(department.getId()) != null) return false;
         try {
             container.store(department);
         } catch (Exception e) {

@@ -37,9 +37,12 @@ public class Department {
     public void setLocation(String location) {
         this.location = location;
     }
-//    @Override
-//    public String toString() {
-//        return "Department: \n ID=" + id + "\n Name=" + name + "\n Location=" + location + " \n ____________________________________";
-//    }
 
+    @Override
+    public String toString() {
+        return "Department" +
+                "\tid:" + id + '\n' +
+                "\tname:" + name + '\n' +
+                "\tlocation:" + location + '\n';
+    }
 }

@@ -58,8 +58,8 @@ public class Employee {
     public String toString() {
         return "Empleado: " + '\n' +
                 "\tid: " + id + '\n' +
-                "\tnombre: '" + name + '\n' +
-                "\tpuesto=: '" + job + '\n' +
+                "\tnombre: " + name + '\n' +
+                "\tpuesto=: " + job + '\n' +
                 "\tdepartamento: " + department.getId();
     }
 }
