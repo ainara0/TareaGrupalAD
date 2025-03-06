@@ -62,9 +62,19 @@ public class EmployeeJPA {
         this.depno = depno;
     }
 
+//    @Override
+//    public String toString() {
+//        return "Employee{" + "id=" + id + ", name=" + name + ", job=" + job + "depno=" + depno + '}';
+//    }
+
+
     @Override
     public String toString() {
-        return "Employee{" + "id=" + id + ", name=" + name + ", job=" + job + "depno=" + depno + '}';
+        return "EmployeeJPA{" +
+                "id=" + id +
+                "name='" + name + '\'' +
+                "job='" + job + '\'' +
+                "depno=" + depno +
+                '}';
     }
-
 }

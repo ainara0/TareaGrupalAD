@@ -188,14 +188,42 @@ public class Db4oDAO implements Closeable, IDAO {
      */
     @Override
     public Department updateDepartment(Object departmentObject) {
-        if (!(departmentObject instanceof Department department)) return null;
+        if (!(departmentObject instanceof Department department)) {
+            return null;
+        }
+
+
+        System.out.println("¿Qué desea actualizar del departamento?");
+        System.out.println("1. Nombre");
+        System.out.println("2. Ubicación");
+        System.out.println("3. Ambos");
+
+        int opcion = Utils.Ask.askForNumber();
+        switch (opcion) {
+            case 1:
+                System.out.println("Ingrese el nuevo nombre:");
+                String nuevoNombre = Utils.Ask.askForString();
+                department.setName(nuevoNombre);
+                break;
+            case 2:
+                System.out.println("Ingrese la nueva ubicación:");
+                String nuevaUbicacion = Utils.Ask.askForString();
+                department.setLocation(nuevaUbicacion);
+                break;
+            default:
+                System.out.println("Opción no válida.");
+                return null;
+        }
+
         try {
             container.store(department);
         } catch (Exception e) {
             return null;
         }
+
         return department;
     }
+
 
     /**
      * Deletes a department by ID.

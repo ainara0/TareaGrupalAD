@@ -10,7 +10,9 @@ import org.bson.conversions.Bson;
 
 import java.io.Closeable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
 
 
 /**
@@ -62,7 +64,7 @@ public class MongoDBDAO implements Closeable, IDAO {
     public void addEmployee(Employee employee) {
         MongoCollection<Document> employeesCollection = db.getCollection("Employee");
         Document document = new Document()
-                .append("_id", employee.getId())
+                .append("_id", getLastEmployeeId() + 1)
                 .append("name", employee.getName())
                 .append("job", employee.getJob())
                 .append("department_id", employee.getDepartment().getId())
@@ -106,23 +108,46 @@ public class MongoDBDAO implements Closeable, IDAO {
 
     /**
      * Updates an employee's information in the MongoDB collection.
-     * @param employeeObject The employee object with updated data.
      * @return The updated Employee object if successful, otherwise null.
      */
     @Override
     public Employee updateEmployee(Object employeeObject) {
-        if (!(employeeObject instanceof Employee employee)) {
+        if (!(employeeObject instanceof Employee employee)){
             return null;
         }
-
+        Bson updates;
+        System.out.println("Seleccione el campo a actualizar:");
+        System.out.println("1. Nombre");
+        System.out.println("2. Localidad");
+        int choice = Utils.Ask.askForNumber();
+        switch (choice) {
+            case 1:
+                System.out.println("Ingrese el nuevo nombre: ");
+                String name = Utils.Ask.askForString();
+                updates = Updates.set("name", name);
+                break;
+            case 2:
+                System.out.println("Ingrese el nuevo puesto: ");
+                String job = Utils.Ask.askForString();
+                updates = Updates.set("job", job);
+                break;
+            case 3:
+                System.out.println("Ingrese el departamento: ");
+                int departmentId = Utils.Ask.askForNumber();
+                if (findDepartmentById(departmentId) != null) {
+                    updates = Updates.set("department_id", departmentId);
+                } else {
+                    System.out.println("No existe el departamento.");
+                    return null;
+                }
+                break;
+            default:
+                System.out.println("Opción no valida.");
+                return null;
+        }
         MongoCollection<Document> employeesCollection = db.getCollection("Employee");
         Bson query = Filters.eq("_id", employee.getId());
-        Bson updates = Updates.combine(
-                Updates.set("name", employee.getName()),
-                Updates.set("job", employee.getJob()),
-                Updates.set("department_id", employee.getDepartment().getId())
-        );
-        Document updatedEmployee = employeesCollection.findOneAndUpdate(query,updates);
+        Document updatedEmployee = employeesCollection.findOneAndUpdate(query, updates);
         return updatedEmployee != null ? toEmployee(updatedEmployee) : null;
     }
 
@@ -177,13 +202,35 @@ public class MongoDBDAO implements Closeable, IDAO {
         if (!(departmentObject instanceof Department department)) {
             return null;
         }
+
+
+        System.out.println("Seleccione el campo a actualizar:");
+        System.out.println("1. Nombre");
+        System.out.println("2. Localizacion");
+
+        int opcion = Utils.Ask.askForNumber();
+        Bson updates;
+        switch (opcion){
+            case 1:
+                System.out.println("Ingrese el nuevo nombre: ");
+                String newName = Utils.Ask.askForString();
+                department.setName(newName);
+                updates = Updates.set("name", newName);
+                break;
+            case 2:
+                System.out.println("Ingrese la nueva localizacion: ");
+                String newLocation = Utils.Ask.askForString();
+                department.setLocation(newLocation);
+                updates = Updates.set("location", newLocation);
+                break;
+            default:
+                System.out.println("Opción no valida");
+                return null;
+
+        }
         MongoCollection<Document> departmentsCollection = db.getCollection("Department");
         Bson query = Filters.eq("_id", department.getId());
-        Bson updates = Updates.combine(
-                Updates.set("name", department.getName()),
-                Updates.set("location", department.getLocation())
-        );
-        Document updatedDepartment = departmentsCollection.findOneAndUpdate(query,updates);
+        Document updatedDepartment = departmentsCollection.findOneAndUpdate(query, updates);
         return updatedDepartment != null ? toDepartment(updatedDepartment) : null;
     }
 
@@ -245,5 +292,12 @@ public class MongoDBDAO implements Closeable, IDAO {
                 document.getString("job"),
                 findDepartmentById(document.getInteger("department_id"))
         );
+    }
+
+    private int getLastEmployeeId() {
+        List<Employee> employees = findAllEmployees();
+        if (employees == null || employees.isEmpty()) return -1;
+        employees.sort(Comparator.comparingInt(Employee::getId));
+        return employees.getLast().getId();
     }
 }

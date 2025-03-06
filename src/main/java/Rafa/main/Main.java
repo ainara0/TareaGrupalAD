@@ -91,7 +91,7 @@ public class Main {
         Department department = dao.findDepartmentById(id);
         dao.updateDepartment(department);
         if (department == null) {
-            System.out.println("El departamento no existe");
+            System.out.println("No ha sido factible hacer los cambios  \n");
         } else {
             System.out.println("El departamento con id " + id + " actualizado. \n");
         }
@@ -132,7 +132,7 @@ public class Main {
         int id = Utils.Ask.askForNumber();
         boolean deleted = dao.deleteEmployee(id);
         if (!deleted) {
-            System.out.println("El empleado con id " + id + " no existe \n");
+            System.out.println("El empleado con id " + id + " no se ha podido eliminar \n");
         } else {
             System.out.println("El empleado con id " + id + " eliminado \n");
         }
@@ -144,7 +144,7 @@ public class Main {
         Employee employee = dao.findEmployeeById(id);
         dao.updateEmployee(employee);
         if (employee == null) {
-            System.out.println("El empleado con id " + id + " no existe. \n");
+            System.out.println("No ha sido factible hacer los cambios  \n");
         } else {
             System.out.println("El empleado con id " + id + " actualizado con éxito \n");
         }
@@ -164,8 +164,10 @@ public class Main {
 
     private void addEmployee() {
         Employee emp = new Employee();
+
         System.out.print("Ingrese el nombre: ");
         emp.setName(Utils.Ask.askForString());
+
         System.out.print("Ingrese el puesto de trabajo: ");
         emp.setJob(Utils.Ask.askForString());
         Department dept = findDepartmentById();
@@ -181,13 +183,18 @@ public class Main {
     private void findEmployeeByDepartment() {
         System.out.print("Ingrese ID del departamento: ");
         int idDept = Utils.Ask.askForNumber();
-        List<Employee> employees = dao.findEmployeesByDept(idDept);
-        if (employees != null && !employees.isEmpty()) {
-            for (Employee employee : employees) {
-                System.out.println(employee);
-            }
+        Department department = dao.findDepartmentById(idDept);
+        if (department == null) {
+            System.out.println("El departamento no existe \n");
         } else {
-            System.out.println("No existen empleados en el departamento " + idDept + "\n");
+            List<Employee> employees = dao.findEmployeesByDept(idDept);
+            if (employees != null && !employees.isEmpty()) {
+                for (Employee employee : employees) {
+                    System.out.println(employee);
+                }
+            } else {
+                System.out.println("No existen empleados en el departamento " + idDept + "\n");
+            }
         }
     }
 
