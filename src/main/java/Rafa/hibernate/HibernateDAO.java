@@ -45,7 +45,6 @@ public class HibernateDAO implements IDAO {
                     employeeJPA.getJob(),
                     findDepartmentById(employeeJPA.getDepno().getId())
             );
-            System.out.println(employee);
             return employee;
         } else {
             return null;
@@ -69,6 +68,7 @@ public class HibernateDAO implements IDAO {
     public Employee updateEmployee(Object id) {
         entityManager.getTransaction().begin();
         if (!(id instanceof Employee employee)) {
+            entityManager.getTransaction().rollback();
             return null;
         }
         EmployeeJPA employeeJpa = entityManager.find(EmployeeJPA.class, employee.getId());
@@ -207,7 +207,6 @@ public class HibernateDAO implements IDAO {
                     departmentJPA.getCity()
             );
         } else{
-            entityManager.getTransaction().rollback();
             return null;
         }
     }
@@ -230,15 +229,11 @@ public class HibernateDAO implements IDAO {
     public Department updateDepartment(Object id) {
         entityManager.getTransaction().begin();
 
-        if (!(id instanceof Employee employee)){
-            return null;
-        }
-        DepartmentJPA departmentJPA = entityManager.find(DepartmentJPA.class, employee.getId());
-
-        if (departmentJPA == null) {
+        if (!(id instanceof Department department)){
             entityManager.getTransaction().rollback();
             return null;
         }
+        DepartmentJPA departmentJPA = entityManager.find(DepartmentJPA.class, department.getId());
 
         int option;
 
@@ -306,24 +301,33 @@ public class HibernateDAO implements IDAO {
         return false;
     }
 
-    private boolean askForIdFromDepartment(DepartmentJPA department) {
-        System.out.print("Ingrese el nuevo Id: ");
-        int deptId = Utils.Ask.askForNumber();
-        Department dept = findDepartmentById(deptId);
-        if (dept == null) {
-            department.setId(deptId);
-            return false;
-        } else {
-            System.err.println("Ese id de departamento ya existe");
-            entityManager.getTransaction().rollback();
-            return true;
-        }
-    }
+//    private boolean askForIdFromDepartment(DepartmentJPA department) {
+//        System.out.print("Ingrese el nuevo Id: ");
+//        int deptId = Utils.Ask.askForNumber();
+//        Department dept = findDepartmentById(deptId);
+//        if (dept == null) {
+//            department.setId(deptId);
+//            return false;
+//        } else {
+//            System.err.println("Ese id de departamento ya existe");
+//            entityManager.getTransaction().rollback();
+//            return true;
+//        }
+//    }
 
     @Override
     public Department deleteDepartment(Object id) {
         entityManager.getTransaction().begin();
         DepartmentJPA departmentJPA = entityManager.find(DepartmentJPA.class, id);
+        int deptID = departmentJPA.getId();
+        List<EmployeeJPA> employees = entityManager.createQuery("SELECT e FROM EmployeeJPA e WHERE e.depno.id = :deptID", EmployeeJPA.class)
+                .setParameter("deptID", deptID)
+                .getResultList();
+        if (!employees.isEmpty()) {
+            entityManager.getTransaction().rollback();
+            System.out.println("No se puede borrar un departamento con empleados.");
+            return null;
+        }
         if (departmentJPA != null) {
             entityManager.remove(departmentJPA);
             entityManager.getTransaction().commit();
@@ -333,6 +337,7 @@ public class HibernateDAO implements IDAO {
                     departmentJPA.getCity()
             );
         }
+        entityManager.getTransaction().rollback();
         return null;
     }
 
