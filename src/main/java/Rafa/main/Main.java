@@ -96,11 +96,15 @@ public class Main {
     private void deleteDepartment() {
         System.out.print("Ingrese ID del departamento a eliminar: ");
         int id = Utils.Ask.askForNumber();
-        Department department = dao.deleteDepartment(id);
-        if (department == null) {
-            System.out.println("El departamento con id " + id + " no existe.");
+        if (dao.findEmployeesByDept(id) == null || dao.findEmployeesByDept(id).isEmpty()) {
+            Department department = dao.deleteDepartment(id);
+            if (department == null) {
+                System.out.println("El departamento con id " + id + " no se ha podido eliminar.");
+            } else {
+                System.out.println("El departamento con id " + id + " eliminado.");
+            }
         } else {
-            System.out.println("El departamento con id " + id + " eliminado.");
+            System.out.println("El departamento tiene empleados. No se ha podido eliminar.");
         }
     }
 
