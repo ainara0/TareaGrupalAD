@@ -59,7 +59,7 @@ public class Employee {
         return "Empleado: " + '\n' +
                 "\tid: " + id + '\n' +
                 "\tnombre: " + name + '\n' +
-                "\tpuesto=: " + job + '\n' +
+                "\tpuesto: " + job + '\n' +
                 "\tdepartamento: " + department.getId();
     }
 }

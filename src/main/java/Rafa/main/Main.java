@@ -224,8 +224,9 @@ public class Main {
         Employee employee = dao.findEmployeeById(id);
         if (employee == null) {
             System.out.println("El empleado no existe");
+        } else {
+            System.out.println(employee);
         }
-        System.out.println(employee);
     }
 
     private void printEmployeesTF() {
